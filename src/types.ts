@@ -10,6 +10,13 @@ export type CardanoWalletApi = {
   getUtxos: () => Promise<string[]>;
   getUsedAddresses: () => Promise<string[]>;
   getUnusedAddresses: () => Promise<string[]>;
+  signData: (
+    hexAddress: string,
+    hexPayload: string
+  ) => Promise<{
+    signature: string;
+    key: string;
+  }>;
 };
 
 export * from "./decoders/types";
