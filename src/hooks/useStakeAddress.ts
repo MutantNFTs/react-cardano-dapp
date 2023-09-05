@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { useWallet } from "./useWallet";
+import { toStakeAddress } from "@mutants/cardano-utils";
 
-import { hexToStakeAddr } from "../utils/hexToStakeAddr";
+import { useWallet } from "./useWallet";
 
 export const useStakeAddress = () => {
   const { walletApi } = useWallet();
@@ -27,7 +27,7 @@ export const useStakeAddress = () => {
       }
 
       if (hexAddr) {
-        setStakeAddress(hexToStakeAddr(hexAddr));
+        setStakeAddress(toStakeAddress(hexAddr));
         setLoading(false);
       }
     });
