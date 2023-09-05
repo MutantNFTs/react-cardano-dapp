@@ -5,17 +5,20 @@ import { toHexAddress } from "@mutants/cardano-utils";
 
 import { useWallet } from "./useWallet";
 
-type SignatureData = {
+export type SignatureData = {
   signature: string;
   hexAddress: string;
   pkh: string;
 };
 
-export const useSignedAction = (action: (signature: SignatureData) => void) => {
+export const useSignData = () => {
   const { walletApi } = useWallet();
 
   const signData = useCallback(
-    async (paymentAddr: string, payload: string) => {
+    async (
+      paymentAddr: string,
+      payload: string
+    ): Promise<SignatureData | null> => {
       if (!walletApi) {
         throw new Error("User is not connected.");
       }
@@ -47,22 +50,16 @@ export const useSignedAction = (action: (signature: SignatureData) => void) => {
             signature,
             hexAddress: hexAddressSignature.toString("hex"),
             pkh: hexAddressSignature.toString("hex").substring(2, 58),
-          };
+          } as SignatureData;
         } else {
           throw new Error("Invalid signature.");
         }
       }
+
+      return null;
     },
     [walletApi]
   );
 
-  return async (paymentAddr: string, payload: string) => {
-    const signature = await signData(paymentAddr, payload);
-
-    if (signature) {
-      action(signature);
-    } else {
-      throw new Error("Invalid signature.");
-    }
-  };
+  return signData;
 };
