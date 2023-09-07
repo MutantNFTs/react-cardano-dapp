@@ -4,6 +4,7 @@ export * from "./hooks/useLovelaceBalance";
 export * from "./hooks/useBalance";
 export * from "./hooks/useSelectWalletNfts";
 export * from "./hooks/useStakeAddress";
+export * from "./hooks/usePaymentAddress";
 export * from "./hooks/useSignData";
 
 export * from "./contexts/WalletContext";

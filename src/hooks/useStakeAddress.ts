@@ -1,41 +1,26 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { toStakeAddress } from "@mutants/cardano-utils";
 
-import { useWallet } from "./useWallet";
+import { usePaymentAddress } from "./usePaymentAddress";
 
 export const useStakeAddress = () => {
-  const { walletApi } = useWallet();
-  const [loading, setLoading] = useState(true);
-
   const [stakeAddress, setStakeAddress] = useState<string>();
-
-  const refresh = useCallback(() => {
-    setLoading(true);
-
-    walletApi?.getUnusedAddresses().then(async (unusedAddresses: string[]) => {
-      let hexAddr: string | null = null;
-
-      if (!unusedAddresses?.length) {
-        const usedAddresses = await walletApi.getUsedAddresses();
-
-        if (usedAddresses?.length) {
-          hexAddr = usedAddresses[0];
-        }
-      } else {
-        hexAddr = unusedAddresses[0];
-      }
-
-      if (hexAddr) {
-        setStakeAddress(toStakeAddress(hexAddr));
-        setLoading(false);
-      }
-    });
-  }, [walletApi]);
+  const {
+    paymentAddress,
+    refresh: refreshPaymentAddress,
+    loading,
+  } = usePaymentAddress();
 
   useEffect(() => {
-    refresh();
-  }, [walletApi]);
+    if (paymentAddress) {
+      setStakeAddress(toStakeAddress(paymentAddress));
+    }
+  }, [paymentAddress]);
 
-  return { stakeAddress, refresh, loading };
+  return {
+    stakeAddress,
+    loading,
+    refresh: refreshPaymentAddress,
+  };
 };

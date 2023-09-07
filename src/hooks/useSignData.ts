@@ -32,11 +32,22 @@ export const useSignData = () => {
         throw new Error("Invalid payment address.");
       }
 
+      const cachedSignature = window.localStorage.getItem(
+        `signed_payload_${payload}_${paymentAddr}`
+      );
+
+      if (cachedSignature) {
+        return JSON.parse(cachedSignature) as SignatureData;
+      }
+
       const signedData = await walletApi.signData(address, payload);
 
       if (signedData) {
         const signature = signedData.signature;
+        const key = signedData.key;
         const decodedSignature = decode(signature) as [Buffer];
+        const decodedKey = decode(key) as Map<number, Buffer>;
+        const pkh = decodedKey.get(-2)?.toString("hex");
         const decodedHeaderMap = decode(
           decodedSignature[0].toString("hex")
         ) as Map<string, Buffer>;
@@ -46,11 +57,18 @@ export const useSignData = () => {
           hexAddressSignature &&
           hexAddressSignature.toString("hex") === address
         ) {
-          return {
+          const signatureData = {
             signature,
             hexAddress: hexAddressSignature.toString("hex"),
-            pkh: hexAddressSignature.toString("hex").substring(2, 58),
+            pkh,
           } as SignatureData;
+
+          window.localStorage.setItem(
+            `signed_payload_${payload}_${paymentAddr}`,
+            JSON.stringify(signatureData)
+          );
+
+          return signatureData;
         } else {
           throw new Error("Invalid signature.");
         }

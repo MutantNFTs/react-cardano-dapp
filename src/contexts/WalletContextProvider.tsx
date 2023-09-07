@@ -5,15 +5,11 @@ import { LOCAL_STORAGE_WALLET_KEY, WalletContext } from "./WalletContext";
 import { CardanoWalletApi, CardanoWalletInfo } from "../types";
 
 export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
-  const storageConnectedWallet =
+  const storageWallet =
     window.localStorage.getItem(LOCAL_STORAGE_WALLET_KEY) || undefined;
 
-  const [connectedWalletId, setConnectedWalletId] = useState<
-    string | undefined
-  >(storageConnectedWallet);
-
-  const [walletInfo, setWalletInfo] = useState<CardanoWalletInfo | undefined>();
-
+  const [connectedWalletId, setConnectedWalletId] = useState(storageWallet);
+  const [walletInfo, setWalletInfo] = useState<CardanoWalletInfo>();
   const [walletApi, setWalletApi] = useState<CardanoWalletApi>();
 
   return (

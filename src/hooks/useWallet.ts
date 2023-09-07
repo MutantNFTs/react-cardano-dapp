@@ -68,5 +68,11 @@ export const useWallet = () => {
     }
   }, [connectedWalletId, walletApi]);
 
-  return { connect, disconnect, walletApi, walletInfo, connectedWalletId };
+  return {
+    connect,
+    disconnect,
+    walletApi,
+    walletInfo,
+    connectedWalletId,
+  };
 };
