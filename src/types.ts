@@ -10,8 +10,8 @@ export type CardanoWalletApi = {
   getUtxos: () => Promise<string[]>;
   getUsedAddresses: () => Promise<string[]>;
   getUnusedAddresses: () => Promise<string[]>;
-  signTx: () => Promise<string>;
-  submitTx: () => Promise<string>;
+  signTx: (tx: string, partial?: boolean) => Promise<string>;
+  submitTx: (tx: string) => Promise<string>;
   signData: (
     hexAddress: string,
     hexPayload: string
