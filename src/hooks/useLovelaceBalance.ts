@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { useWallet } from "./useWallet";
+import { decodeBalance } from "@mutants/cardano-tx-builder";
 
-import { decodeBalance } from "../decoders/decodeBalance";
+import { useWallet } from "./useWallet";
 
 export const useLovelaceBalance = () => {
   const { walletApi } = useWallet();

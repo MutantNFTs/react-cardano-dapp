@@ -1,15 +1,7 @@
 import { useMemo } from "react";
 
-import { CardanoWalletInfo } from "../types";
-
-type CardanoWindow = {
-  cardano?: {
-    [key: string]: CardanoWalletInfo;
-  };
-};
-
 export const useAvailableWallets = () => {
-  const cardano = (window as CardanoWindow).cardano;
+  const cardano = window.cardano;
 
   const cardanoWallets = useMemo(() => {
     return Object.entries(cardano || {})

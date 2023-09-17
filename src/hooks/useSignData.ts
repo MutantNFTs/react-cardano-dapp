@@ -5,6 +5,8 @@ import { toHexAddress } from "@mutants/cardano-utils";
 
 import { useWallet } from "./useWallet";
 
+import { ERROR_CODES } from "../constants";
+
 export type SignatureData = {
   signature: string;
   hexAddress: string;
@@ -20,7 +22,7 @@ export const useSignData = () => {
       payload: string
     ): Promise<SignatureData | null> => {
       if (!walletApi) {
-        throw new Error("User is not connected.");
+        throw new Error(ERROR_CODES.NOT_CONNECTED);
       }
 
       const usedAddresses = await walletApi.getUsedAddresses();
@@ -29,7 +31,7 @@ export const useSignData = () => {
       );
 
       if (!address) {
-        throw new Error("Invalid payment address.");
+        throw new Error(ERROR_CODES.INVALID_PAYMENT_ADDRESS);
       }
 
       const cachedSignature = window.localStorage.getItem(
@@ -70,7 +72,7 @@ export const useSignData = () => {
 
           return signatureData;
         } else {
-          throw new Error("Invalid signature.");
+          throw new Error(ERROR_CODES.INVALID_SIGNATURE);
         }
       }
 

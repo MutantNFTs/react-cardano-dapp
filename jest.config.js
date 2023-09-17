@@ -1,13 +1,16 @@
 module.exports = {
   preset: "ts-jest",
-  testEnvironment: "node",
+  testEnvironment: "jsdom",
+  setupFilesAfterEnv: ["./jest.setup.js"],
   workerThreads: true, // to handle bigint
+  modulePathIgnorePatterns: [".yalc", "dist"],
   collectCoverageFrom: [
-    './src/*.ts',
-    '!**/node_modules/**',
-    '!./src/__utils/**',
-    '!./src/index.ts',
-    '!./src/types.ts'
+    "./src/hooks/*.ts",
+    "!**/node_modules/**",
+    "!./src/__utils/**",
+    "!./src/index.ts",
+    "!./src/types.ts",
+    "!.yalc",
   ],
   coverageThreshold: {
     global: {

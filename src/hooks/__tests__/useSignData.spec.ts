@@ -8,13 +8,6 @@ jest.mock("../useWallet");
 
 describe("useSignData", () => {
   beforeEach(() => {
-    global.window = {
-      localStorage: {
-        getItem: jest.fn(),
-        setItem: jest.fn(),
-      } as unknown as Storage,
-    } as Window & typeof globalThis;
-
     (useCallback as jest.Mock).mockImplementation((cb) => cb);
 
     (useWallet as jest.Mock).mockReturnValue({
@@ -51,15 +44,16 @@ describe("useSignData", () => {
   });
 
   it("should return cached signature", async () => {
-    const signedAction = useSignData();
-
-    (global.window.localStorage.getItem as jest.Mock).mockReturnValue(
+    window.localStorage.setItem(
+      `signed_payload_${"test"}_${"addr1q85j96qkdpfqw0tvrjd7qum9xpqye8pxmxapwulpr5edz8q00vk8lzfy22xhj750smvzzrtzwmsf73ac9mx48gjfqrnspq6sah"}`,
       JSON.stringify({
         signature: "cached",
         hexAddress: "cached",
         pkh: "cached",
       })
     );
+
+    const signedAction = useSignData();
 
     const output = await signedAction(
       "addr1q85j96qkdpfqw0tvrjd7qum9xpqye8pxmxapwulpr5edz8q00vk8lzfy22xhj750smvzzrtzwmsf73ac9mx48gjfqrnspq6sah",

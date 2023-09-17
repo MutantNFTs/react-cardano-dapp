@@ -1,7 +1,7 @@
 export type CardanoWalletInfo = {
   name: string;
   icon: string;
-  enable?: () => Promise<void>;
+  enable?: () => Promise<CardanoWalletApi>;
 };
 
 export type CardanoWalletApi = {
@@ -10,6 +10,8 @@ export type CardanoWalletApi = {
   getUtxos: () => Promise<string[]>;
   getUsedAddresses: () => Promise<string[]>;
   getUnusedAddresses: () => Promise<string[]>;
+  signTx: () => Promise<string>;
+  submitTx: () => Promise<string>;
   signData: (
     hexAddress: string,
     hexPayload: string
@@ -17,6 +19,13 @@ export type CardanoWalletApi = {
     signature: string;
     key: string;
   }>;
+  error?: string;
 };
 
-export * from "./decoders/types";
+declare global {
+  interface Window {
+    cardano?: {
+      [key: string]: CardanoWalletInfo;
+    };
+  }
+}

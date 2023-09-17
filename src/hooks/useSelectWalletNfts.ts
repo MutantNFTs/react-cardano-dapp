@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 
-import { useBalance } from "./useBalance";
+import { AssetMap } from "@mutants/cardano-tx-builder";
 
-import { AssetMap } from "../decoders/types";
+import { useBalance } from "./useBalance";
 
 type UseWalletNftsOpts = {
   policyIds?: string[];

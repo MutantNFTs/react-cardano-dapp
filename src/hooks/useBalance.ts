@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 
+import { AssetMap, decodeBalance, Lovelace } from "@mutants/cardano-tx-builder";
+
 import { useWallet } from "./useWallet";
 
-import { decodeBalance } from "../decoders/decodeBalance";
-import { Balance } from "../decoders/types";
+type Balance = {
+  lovelace: Lovelace;
+  assets: AssetMap;
+};
 
 export const useBalance = () => {
   const { walletApi } = useWallet();

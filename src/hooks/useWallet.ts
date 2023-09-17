@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback, useContext, useEffect } from "react";
 
 import {
@@ -35,7 +34,7 @@ export const useWallet = () => {
 
       connecting = true;
 
-      const walletInfo = (window as any).cardano?.[walletId];
+      const walletInfo = window.cardano?.[walletId];
 
       if (!walletInfo) {
         // Sometimes extension takes a while to load
