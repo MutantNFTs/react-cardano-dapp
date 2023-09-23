@@ -5,7 +5,7 @@ import { ERROR_CODES } from "../constants";
 export const useSignTx = () => {
   const { walletApi } = useWallet();
 
-  return walletApi?.signTx
+  return walletApi
     ? walletApi.signTx
     : () => {
         throw new Error(ERROR_CODES.NOT_CONNECTED);

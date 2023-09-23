@@ -1,77 +1,24 @@
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import {
-  LOCAL_STORAGE_WALLET_KEY,
-  WalletContext,
-} from "../contexts/WalletContext";
-import { CardanoWalletApi } from "../types";
-
-let connecting = false;
+import { CardanoWallet } from "../CardanoWallet";
+import { CardanoWalletApi, CardanoWalletInfo } from "../types";
 
 export const useWallet = () => {
-  const {
-    setWalletApi,
-    setConnectedWalletId,
-    connectedWalletId,
-    walletApi,
-    setWalletInfo,
-    walletInfo,
-  } = useContext(WalletContext);
+  const [walletApi, setWalletApi] = useState<CardanoWalletApi>();
+  const [walletInfo, setWalletInfo] = useState<CardanoWalletInfo>();
 
-  const disconnect = useCallback(() => {
-    window.localStorage.removeItem(LOCAL_STORAGE_WALLET_KEY);
-
-    setConnectedWalletId?.(undefined);
-    setWalletApi?.(undefined);
-    setWalletInfo?.(undefined);
-  }, []);
-
-  const connect = useCallback(async (walletId: string) => {
-    try {
-      if (connecting) {
-        return;
-      }
-
-      connecting = true;
-
-      const walletInfo = window.cardano?.[walletId];
-
-      if (!walletInfo) {
-        // Sometimes extension takes a while to load
-        setTimeout(() => {
-          connect(walletId);
-        }, 5000);
-      }
-
-      const enabledWallet = await walletInfo?.enable?.();
-
-      if (enabledWallet && !enabledWallet?.error) {
-        window.localStorage.setItem(LOCAL_STORAGE_WALLET_KEY, walletId);
-
-        setWalletInfo?.(walletInfo);
-        setConnectedWalletId?.(walletId);
-        setWalletApi?.(enabledWallet as CardanoWalletApi);
-      }
-    } catch (e) {
-      console.log("Error when trying to connect wallet", e);
-
-      return false;
-    } finally {
-      connecting = false;
-    }
+  const onConnectionChange = useCallback(() => {
+    setWalletApi(CardanoWallet.getWalletApi());
+    setWalletInfo(CardanoWallet.getWalletInfo());
   }, []);
 
   useEffect(() => {
-    if (!walletApi && connectedWalletId) {
-      connect(connectedWalletId);
-    }
-  }, [connectedWalletId, walletApi]);
+    CardanoWallet.listenConnection(onConnectionChange);
 
-  return {
-    connect,
-    disconnect,
-    walletApi,
-    walletInfo,
-    connectedWalletId,
-  };
+    return () => {
+      CardanoWallet.unlistenConnection(onConnectionChange);
+    };
+  }, []);
+
+  return { walletApi, walletInfo };
 };

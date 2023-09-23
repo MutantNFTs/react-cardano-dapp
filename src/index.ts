@@ -9,11 +9,7 @@ export * from "./hooks/useSignData";
 export * from "./hooks/useRequestUTxOsByValue";
 export * from "./hooks/useSignTx";
 export * from "./hooks/useSubmitTx";
-
-export * from "./contexts/WalletContext";
-export * from "./contexts/WalletContextProvider";
-export * from "./contexts/UTxOsContext";
-export * from "./contexts/UTxOsContextProvider";
+export * from "./CardanoWallet";
 
 export * from "./utils/lovelaceToCurrency";
 export * from "./utils/adaToCurrency";

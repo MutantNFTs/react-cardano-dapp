@@ -1,9 +1,25 @@
-import { useContext } from "react";
+import { useEffect, useState } from "react";
 
-import { UTxOsContext } from "../contexts/UTxOsContext";
+import { UTxO } from "@mutants/cardano-tx-builder";
+
+import { useWallet } from "./useWallet";
+
+import { CardanoWallet } from "../CardanoWallet";
 
 export const useUTxOs = () => {
-  const context = useContext(UTxOsContext);
+  const { walletApi } = useWallet();
+  const [utxos, setUTxOs] = useState<UTxO[]>([]);
 
-  return context;
+  useEffect(() => {
+    if (walletApi) {
+      CardanoWallet.getUTxOs().then((utxos) => {
+        setUTxOs(utxos);
+      });
+    }
+  }, [walletApi]);
+
+  return {
+    utxos,
+    refresh: CardanoWallet.refreshUTxOs,
+  };
 };

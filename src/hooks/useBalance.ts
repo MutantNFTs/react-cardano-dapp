@@ -10,8 +10,9 @@ type Balance = {
 };
 
 export const useBalance = () => {
-  const { walletApi } = useWallet();
   const [loading, setLoading] = useState(true);
+
+  const { walletApi } = useWallet();
 
   const [balance, setBalance] = useState<Balance>({
     lovelace: 0n,
@@ -19,14 +20,16 @@ export const useBalance = () => {
   });
 
   const refresh = useCallback(() => {
-    setLoading(true);
+    if (walletApi) {
+      setLoading(true);
 
-    walletApi?.getBalance().then((encodedBalance) => {
-      const balance = decodeBalance(encodedBalance);
+      walletApi?.getBalance().then((encodedBalance) => {
+        const balance = decodeBalance(encodedBalance);
 
-      setBalance(balance);
-      setLoading(false);
-    });
+        setBalance(balance);
+        setLoading(false);
+      });
+    }
   }, [walletApi]);
 
   useEffect(() => {
