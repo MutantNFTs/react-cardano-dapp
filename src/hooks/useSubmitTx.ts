@@ -13,8 +13,11 @@ export const useSubmitTx = () => {
           if (e instanceof Error) {
             if (e.message?.includes("declined")) {
               // suppress declined errors
+              return;
             }
           }
+
+          throw e;
         }
       }
     : () => {
