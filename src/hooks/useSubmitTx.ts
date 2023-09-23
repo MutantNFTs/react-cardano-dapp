@@ -8,7 +8,9 @@ export const useSubmitTx = () => {
   return walletApi
     ? async (tx: string) => {
         try {
-          await walletApi.submitTx(tx);
+          const txHash = await walletApi.submitTx(tx);
+
+          return txHash;
         } catch (e) {
           if (e instanceof Error) {
             if (e.message?.includes("declined")) {

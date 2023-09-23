@@ -8,7 +8,9 @@ export const useSignTx = () => {
   return walletApi
     ? async (tx: string, partial?: boolean) => {
         try {
-          await walletApi.signTx(tx, partial);
+          const signature = await walletApi.signTx(tx, partial);
+
+          return signature;
         } catch (e) {
           if (e instanceof Error) {
             if (e.message?.includes("declined")) {
