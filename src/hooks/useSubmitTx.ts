@@ -6,7 +6,17 @@ export const useSubmitTx = () => {
   const { walletApi } = useWallet();
 
   return walletApi
-    ? walletApi.submitTx
+    ? async (tx: string) => {
+        try {
+          await walletApi.submitTx(tx);
+        } catch (e) {
+          if (e instanceof Error) {
+            if (e.message?.includes("declined")) {
+              // suppress declined errors
+            }
+          }
+        }
+      }
     : () => {
         throw new Error(ERROR_CODES.NOT_CONNECTED);
       };
