@@ -151,7 +151,7 @@ export class CardanoWallet {
         // Sometimes extension takes a while to load
         setTimeout(() => {
           this.connect(walletId);
-        }, 5000);
+        }, 2000);
       }
 
       const enabledWallet = await walletInfo?.enable?.();
@@ -171,8 +171,8 @@ export class CardanoWallet {
       console.log("Error when trying to connect wallet", e);
 
       this.isConnecting = false;
-
-      return false;
+    } finally {
+      this.isConnecting = false;
     }
   }
 
