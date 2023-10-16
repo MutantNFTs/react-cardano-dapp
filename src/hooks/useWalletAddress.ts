@@ -12,7 +12,7 @@ export const useWalletAddress = () => {
   } = usePaymentAddress();
 
   const stakeAddress = useMemo(
-    () => (paymentAddress ? toStakeAddress(paymentAddress) : null),
+    () => (paymentAddress ? toStakeAddress(paymentAddress) : undefined),
     [paymentAddress]
   );
 
