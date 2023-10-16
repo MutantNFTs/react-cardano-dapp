@@ -9,6 +9,7 @@ export * from "./hooks/useSignData";
 export * from "./hooks/useRequestUTxOsByValue";
 export * from "./hooks/useSignTx";
 export * from "./hooks/useSubmitTx";
+export * from "./hooks/useWalletAddress";
 export * from "./CardanoWallet";
 
 export * from "./utils/lovelaceToCurrency";
