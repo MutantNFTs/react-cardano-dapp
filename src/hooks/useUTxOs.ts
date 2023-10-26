@@ -20,6 +20,6 @@ export const useUTxOs = () => {
 
   return {
     utxos,
-    refresh: CardanoWallet.refreshUTxOs,
+    refresh: () => CardanoWallet.refreshUTxOs(),
   };
 };
