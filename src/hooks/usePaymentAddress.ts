@@ -22,6 +22,8 @@ export const usePaymentAddress = (preferredAddress?: string) => {
       }
 
       setLoading(false);
+    } else {
+      setLoading(false);
     }
   }, [walletApi, preferredAddress]);
 
