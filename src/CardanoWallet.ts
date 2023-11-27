@@ -99,7 +99,7 @@ export class CardanoWallet {
             usedAddresses.find((u) => u === hexPreferredAddress) ||
             unusedAddresses[0];
         } else {
-          hexAddr = usedAddresses[0];
+          hexAddr = unusedAddresses[0];
         }
       }
     } else {
