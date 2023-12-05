@@ -12,6 +12,7 @@ export class CardanoWallet {
   private static walletId: string | undefined;
   private static walletInfo: CardanoWalletInfo | undefined;
   private static walletApi: CardanoWalletApi | undefined;
+  private static utxoUpdateInterval: number;
   private static decodedUTxOs: UTxO[];
 
   private static currentPaymentAddress: string;
@@ -166,6 +167,12 @@ export class CardanoWallet {
         this.isConnecting = false;
 
         this.connectionStatusListeners.forEach((listener) => listener());
+
+        if (this.utxoUpdateInterval) {
+          window.clearInterval(this.utxoUpdateInterval);
+
+          this.utxoUpdateInterval = window.setInterval(() => this.refreshUTxOs(), 30000);
+        }
       }
     } catch (e) {
       console.log("Error when trying to connect wallet", e);

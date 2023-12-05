@@ -1,5 +1,6 @@
 import { useWallet } from "./useWallet";
 
+import { CardanoWallet } from "../CardanoWallet";
 import { ERROR_CODES } from "../constants";
 
 export const useSubmitTx = () => {
@@ -9,6 +10,8 @@ export const useSubmitTx = () => {
     ? async (tx: string) => {
         try {
           const txHash = await walletApi.submitTx(tx);
+
+          CardanoWallet.refreshUTxOs();
 
           return txHash;
         } catch (e) {
