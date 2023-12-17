@@ -7,13 +7,11 @@ export const useRequestUTxOsByValue = () => {
   return async (requestedValue: Value) => {
     const walletUtxos = await CardanoWallet.getUTxOs();
 
-    const storageSpentInputs = window.sessionStorage.getItem(CARDANO_DAPP_SPENT_UTXOS_STORAGE_KEY);
-    const spentUtxos: string[] = Array.isArray(storageSpentInputs)
-      ? storageSpentInputs
-      : [];
+    const storageSpentInputs =
+      window.sessionStorage.getItem(CARDANO_DAPP_SPENT_UTXOS_STORAGE_KEY) || "";
 
     const availableUtxos = walletUtxos.filter(
-      (utxo) => !spentUtxos.includes(`${utxo.txHash}|${utxo.txIndex}`)
+      (utxo) => !storageSpentInputs.includes(`${utxo.txHash}|${utxo.txIndex}`)
     );
 
     return selectUtxosByValue(availableUtxos, requestedValue);
