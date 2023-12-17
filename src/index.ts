@@ -15,4 +15,6 @@ export * from "./CardanoWallet";
 export * from "./utils/lovelaceToCurrency";
 export * from "./utils/adaToCurrency";
 
+export * from "./constants";
+
 export * from "./types";
