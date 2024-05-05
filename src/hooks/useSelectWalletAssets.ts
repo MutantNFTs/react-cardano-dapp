@@ -4,12 +4,12 @@ import { AssetMap } from "@mutants/cardano-tx-builder";
 
 import { useBalance } from "./useBalance";
 
-type UseWalletNftsOpts = {
+type UseWalletAssetsOpts = {
   policyIds?: string[];
 };
 
-export const useSelectWalletNfts = (
-  opts?: UseWalletNftsOpts
+export const useSelectWalletAssets = (
+  opts?: UseWalletAssetsOpts
 ): { loading: boolean; nfts: AssetMap } => {
   const { balance, loading } = useBalance();
 
@@ -22,7 +22,7 @@ export const useSelectWalletNfts = (
     } else {
       return balance.assets;
     }
-  }, [loading]);
+  }, [loading, opts?.policyIds]);
 
   return { nfts: filteredAssets, loading };
 };

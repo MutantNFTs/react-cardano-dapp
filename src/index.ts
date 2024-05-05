@@ -2,7 +2,7 @@ export * from "./hooks/useWallet";
 export * from "./hooks/useAvailableWallets";
 export * from "./hooks/useLovelaceBalance";
 export * from "./hooks/useBalance";
-export * from "./hooks/useSelectWalletNfts";
+export * from "./hooks/useSelectWalletAssets";
 export * from "./hooks/useStakeAddress";
 export * from "./hooks/usePaymentAddress";
 export * from "./hooks/useSignData";
